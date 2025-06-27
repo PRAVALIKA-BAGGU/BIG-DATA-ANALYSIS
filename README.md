@@ -1,12 +1,19 @@
 # BIG-DATA-ANALYSIS
+
 *COMOANY*: CODTECH IT SOLUTIONS
+
 *NAME* : PRAVALIKA BAGGU
+
 *INTERN ID* : CT04DF836
+
 *DOMAIN* : DATA ANALYSIS
+
 *DURATION* : 4 WEEKS
+
 *MENTOR* : NEELA SANTOSH
 
 DESCRIPTION:
+
 This task focuses on analyzing user behavior through activity logs using PySpark in a cloud-based environment, specifically Google Colab. The primary objective is to simulate and study user interaction patterns such as logins, clicks, and logouts by processing a sample dataset and extracting meaningful insights through visualizations.
 
 To begin, the necessary environment is set up. This involves installing Java and Apache Spark, which are required to run PySpark in Colab. Additionally, Python packages like findspark, matplotlib, and seaborn are installed to enable Spark integration and to support visual data exploration.
@@ -24,3 +31,9 @@ Another key insight is derived from the distribution of activity types. Grouping
 Throughout the project, visualizations play an important role in communicating findings clearly. Bar charts created using Matplotlib and Seaborn make it easy to interpret trends at a glance. These visuals support decision-making and help validate assumptions about user behavior.
 
 The project concludes by stopping the Spark session to release system resources. While the dataset used is relatively small and synthetic, the approach is scalable and can be applied to large datasets from real applications, such as web server logs, mobile app usage, or IoT telemetry data. This hands-on experience with PySpark prepares learners to handle big data environments and develop insights that support data-driven strategies in real-world organizations.
+
+*OUTPUT*:
+![Image](https://github.com/user-attachments/assets/cd51d6d4-1ce6-49c6-91d4-748e2f60900c)
+![Image](https://github.com/user-attachments/assets/a9171804-2ccf-406a-ae3c-54e2692e6d35)
+![Image](https://github.com/user-attachments/assets/3fa1f8d1-4ab6-4622-a44c-97940bd94fe1)
+![Image](https://github.com/user-attachments/assets/e425c29c-d322-4628-a579-c05c6ba62b34)
