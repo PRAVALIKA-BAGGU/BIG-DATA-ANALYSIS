@@ -1,10 +1,10 @@
 # BIG-DATA-ANALYSIS
-*COMOANY *: CODTECH IT SOLUTIONS
-NAME : PRAVALIKA BAGGU
-INTERN ID : CT04DF836
-DOMAIN : DATA ANALYSIS
-DURATION : 4 WEEKS
-MENTOR : NEELA SANTOSH
+*COMOANY*: CODTECH IT SOLUTIONS
+*NAME* : PRAVALIKA BAGGU
+*INTERN ID* : CT04DF836
+*DOMAIN* : DATA ANALYSIS
+*DURATION* : 4 WEEKS
+*MENTOR* : NEELA SANTOSH
 
 DESCRIPTION:
 This task focuses on analyzing user behavior through activity logs using PySpark in a cloud-based environment, specifically Google Colab. The primary objective is to simulate and study user interaction patterns such as logins, clicks, and logouts by processing a sample dataset and extracting meaningful insights through visualizations.
