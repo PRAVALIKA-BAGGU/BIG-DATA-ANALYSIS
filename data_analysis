@@ -1,0 +1,112 @@
+# ----------------------
+# Step 1: Install Spark
+# ----------------------
+!apt-get install openjdk-8-jdk-headless -qq > /dev/null
+!wget -q https://downloads.apache.org/spark/spark-3.5.1/spark-3.5.1-bin-hadoop3.tgz
+!tar xf spark-3.5.1-bin-hadoop3.tgz
+!pip install -q findspark matplotlib seaborn
+
+# ----------------------
+# Step 2: Environment Setup
+# ----------------------
+import os
+os.environ["JAVA_HOME"] = "/usr/lib/jvm/java-8-openjdk-amd64"
+os.environ["SPARK_HOME"] = "/content/spark-3.5.1-bin-hadoop3"
+
+import findspark
+findspark.init()
+
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, count, hour, to_timestamp, desc
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# ----------------------
+# Step 3: Spark Session
+# ----------------------
+spark = SparkSession.builder.appName("User Activity Analysis").getOrCreate()
+
+# ----------------------
+# Step 4: Create Sample CSV
+# ----------------------
+sample_data = """user_id,activity_type,timestamp
+u1,login,2025-06-01 08:00:00
+u2,logout,2025-06-01 09:00:00
+u1,click,2025-06-01 08:15:00
+u3,login,2025-06-01 10:00:00
+u2,click,2025-06-01 09:30:00
+u1,logout,2025-06-01 08:45:00
+u3,click,2025-06-01 10:15:00
+u4,login,2025-06-01 11:00:00
+u4,logout,2025-06-01 11:30:00
+u2,click,2025-06-01 09:45:00"""
+
+with open("user_activity_logs.csv", "w") as f:
+    f.write(sample_data)
+
+# ----------------------
+# Step 5: Load and Clean Data
+# ----------------------
+df = spark.read.csv("user_activity_logs.csv", header=True, inferSchema=True)
+df = df.dropna(subset=["user_id", "activity_type", "timestamp"])
+df = df.withColumn("timestamp", to_timestamp(col("timestamp")))
+
+# ----------------------
+# Insight 1: Top 10 Active Users
+# ----------------------
+top_users = df.groupBy("user_id").agg(count("*").alias("activity_count")) \
+              .orderBy(desc("activity_count")) \
+              .limit(10)
+
+print("Top 10 Active Users:")
+top_users.show()
+
+# Plot
+top_users_pd = top_users.toPandas()
+sns.barplot(data=top_users_pd, x="user_id", y="activity_count")
+plt.title("Top 10 Active Users")
+plt.xlabel("User ID")
+plt.ylabel("Activity Count")
+plt.show()
+
+# ----------------------
+# Insight 2: Activity Count by Hour
+# ----------------------
+df_with_hour = df.withColumn("hour", hour(col("timestamp")))
+activity_by_hour = df_with_hour.groupBy("hour").agg(count("*").alias("activity_count")) \
+                               .orderBy("hour")
+
+print("Activity by Hour of Day:")
+activity_by_hour.show()
+
+# Plot
+activity_by_hour_pd = activity_by_hour.toPandas()
+sns.barplot(data=activity_by_hour_pd, x="hour", y="activity_count")
+plt.title("Activity Count by Hour")
+plt.xlabel("Hour of Day")
+plt.ylabel("Activity Count")
+plt.show()
+
+# ----------------------
+# Insight 3: Activity Type Distribution
+# ----------------------
+activity_distribution = df.groupBy("activity_type").agg(count("*").alias("count")) \
+                          .orderBy(desc("count"))
+
+print("Activity Distribution:")
+activity_distribution.show()
+
+# Plot
+activity_distribution_pd = activity_distribution.toPandas()
+sns.barplot(data=activity_distribution_pd, x="activity_type", y="count")
+plt.title("Activity Type Distribution")
+plt.xlabel("Activity Type")
+plt.ylabel("Count")
+plt.show()
+
+# ----------------------
+# Stop Spark
+# ----------------------
+spark.stop()
+
